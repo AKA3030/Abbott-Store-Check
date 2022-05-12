@@ -57,11 +57,12 @@ def fetch_prettify(url):
 
 # display.display(prettified_soup)
 def parse_and_check(url, prettified_soup):
-    i = 0
-    while (("We’re sorry this item is not available" in prettified_soup) and (i < 2)):
+    #i = 0
+    #while (("We’re sorry this item is not available" in prettified_soup) and (i < 2)):
+    while "We’re sorry this item is not available" in prettified_soup:
         print("product was not available. Sleeping for a while!")
-        sleep(10)
-        i += 1
+        sleep(500)
+        #i += 1
         continue
     create_popup(url)
 
