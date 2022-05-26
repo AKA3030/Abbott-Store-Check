@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from getpass import getpass
 from selenium.webdriver import ActionChains
+import yagmail
 
 import requests
 import bs4
@@ -55,6 +56,13 @@ def fetch_prettify(url):
     prettified_soup = soup.prettify()
     return prettified_soup
 
+def send_email(my_address,my_password,recipient):
+    user = yagmail.SMTP(user=my_address, 
+                       password=my_password)
+    user.send(to=recipient, \
+             subject='BABY FORMULA IN STOCK', \
+             contents='ACT NOW!!!! https://abbottstore.com/infant-and-child/similac/similac-pro-advance/similac-pro-advance-infant-formula-ready-to-feed-1341/similac-pro-advance-infant-formula-ready-to-feed-1-qt-bottle-case-of-6-64248.html')
+
 # display.display(prettified_soup)
 def parse_and_check(url, prettified_soup):
     #i = 0
@@ -67,10 +75,13 @@ def parse_and_check(url, prettified_soup):
     create_popup(url)
 
 def main():
+    my_address = 'some_email@gmail.com'
+    my_password = 'some_password'
+    recipient = 'some recipient'
     url = 'https://abbottstore.com/infant-and-child/similac/similac-pro-advance/similac-pro-advance-infant-formula-ready-to-feed-1341/similac-pro-advance-infant-formula-ready-to-feed-1-qt-bottle-case-of-6-64248.html'
     prettified_soup = fetch_prettify(url)
 
-    parse_and_check(url, prettified_soup)
+    send_email(my_address,my_password,recipient)
 
     return()
 
