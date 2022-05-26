@@ -77,3 +77,45 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
+import time
+import yagmail
+from datetime import datetime, timedelta,date
+import pandas as pd
+import sys  
+import logging
+import os
+from lxml import etree
+import requests
+import bs4
+    
+    
+    
+def send_email(email,password,recipient,url):
+    user = yagmail.SMTP(user=email, 
+                       password=password)
+    user.send(to=recipient, \
+             subject='BABY FORMULA IN STOCK', \
+             contents=f'ACT NOW!!!! {url}')
+    
+    
+value = 0
+email = 'babyformulaexperiment@gmail.com'
+password = '!jAc87LKXDN4TWs@'
+recipient = 'aileenc@umich.edu'
+url = 'https://abbottstore.com/infant-and-child/similac/similac-pro-advance/similac-pro-advance-infant-formula-ready-to-feed-1341/similac-pro-advance-infant-formula-ready-to-feed-1-qt-bottle-case-of-6-64248.html'
+while value < 289:
+    value = value +1
+    try:
+        #url = 'https://abbottstore.com/infant-and-child/similac/similac-pro-advance/similac-pro-advance-infant-formula-ready-to-feed-1341/similac-pro-advance-infant-formula-ready-to-feed-1-qt-bottle-case-of-6-64248.html'
+        response = requests.get(url)
+        soup = bs4.BeautifulSoup(response.content, "html.parser")
+        dom = etree.HTML(str(soup))
+        status = dom.xpath('//*[@id="pdp-info"]/div[2]/p/strong')[0].text
+        print(status)
+        time.sleep(300)
+        #300 seconds in 5 minutes 
+    except IndexError:
+        print('In Stock!')
+        send_email(email,password,recipient,url)
+        break
